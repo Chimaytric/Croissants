@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <title>Croissants ?</title>
+        <style>
+            html, body, #container {
+                margin : 0;
+                height : 100%;
+            }
+            #container {
+                display : flex;
+                align-items: center;
+                justify-content: center;
+            }
+            #content {
+                vertical-align : middle;
+            }
+            @keyframes yes {
+                0% {
+                    background: red;
+                    color : blue;
+                }
+                25% {
+                    background: yellow;
+                    color : green;
+                }
+                50% {
+                    background: blue;
+                    color : red;
+                }
+                75% {
+                    background: green;
+                    color : yellow;
+                }
+                100% {
+                    background: red;
+                    color : blue;
+                }
+            }
+            .yes {
+                animation : yes 5s linear infinite alternate;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container">
+            <div id="content">
+                <h1 id="answer"></h1>
+            </div>
+        </div>
+        <script>
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var result = JSON.parse(this.responseText).feed.entry[0].title["$t"] === "TRUE" ? true : false;
+                    var answer = document.getElementById('answer');
+                    var container = document.getElementById('container');
+                    if (result) {
+                        answer.innerHTML = "YES !";
+                        container.setAttribute('class', 'yes');
+                    } else {
+                        answer.innerHTML = "No.";
+                    }
+                }
+            };
+            xhttp.open("GET", "https://spreadsheets.google.com/feeds/list/1wvNgkv5RAjYCykbQrJQgYOFTjU4AjhvY6pKfBva3hOM/1/public/basic?alt=json", true);
+            xhttp.send();
+        </script>
+    </body>
+</html>
